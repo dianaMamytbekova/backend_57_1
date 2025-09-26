@@ -1,3 +1,5 @@
+# Домашнее задание 4 📚 (57 1-2)
+
 import flet as ft 
 from datetime import datetime
 
@@ -8,6 +10,8 @@ def main(page: ft.Page):
     greeting_text = ft.Text(value="Hello world!")
     greeting_history = []
     history_text = ft.Text("История приветствий:")
+
+    history_visible = True
 
     def on_button_click(_):
         name = name_input.value.strip()
@@ -27,6 +31,12 @@ def main(page: ft.Page):
         page.update()
 
     def change_button(_):
+        nonlocal history_visible
+        history_visible = not history_visible
+        history_text.visible = history_visible
+        page.update()
+
+    def change_theme(_):
         if page.theme_mode == ft.ThemeMode.LIGHT:
             page.theme_mode = ft.ThemeMode.DARK
         else:
@@ -36,8 +46,9 @@ def main(page: ft.Page):
     name_input = ft.TextField(label="Введите имя", on_submit=on_button_click)
     name_button = ft.ElevatedButton(text='SEND', on_click=on_button_click)
     clean_history_button = ft.IconButton(icon=ft.Icons.DELETE, on_click=clear_history)
-    theme_button = ft.IconButton(icon=ft.Icons.BRIGHTNESS_6, on_click=change_button, tooltip='Cменить тему')
+    toggle_history_button = ft.IconButton(icon=ft.Icons.VISIBILITY, on_click=change_button, tooltip="Скрыть/Показать историю")
+    theme_button = ft.IconButton(icon=ft.Icons.BRIGHTNESS_6, on_click=change_theme, tooltip='Cменить тему')
 
-    page.add(greeting_text, name_input, name_button, clean_history_button, theme_button, history_text)
+    page.add(greeting_text, name_input, name_button, clean_history_button, toggle_history_button, theme_button, history_text)
 
 ft.app(target=main, view=ft.WEB_BROWSER)
